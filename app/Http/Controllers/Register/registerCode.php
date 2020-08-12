@@ -14,6 +14,7 @@ class registerCode {
          }
         $data=$ivrDial->sendTemplateSMS($phone,[$rand,10],1);
         $ConJson = app()->make('ConJson');
+        Redis::set($phone,$rand,'EX',600);
          if($data['status'] == 3) {
              $phone = SMS::get(19856839676);
              Redis::set($phone,$rand,'EX',600);

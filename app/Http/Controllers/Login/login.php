@@ -10,7 +10,7 @@ class login {
            $user=Users::where('name',$name)->get();
            $ConJson=app()->make('ConJson');
            if(isset($user[0])){
-               if ($user[0]['password'] == $password){
+               if ($user[0]['password'] == $password && $user[0]['status'] == 1) {
                      $ConJson->setStatus(201);
                      $ConJson->setContent('Login Success!');
                      $API = md5($name.$password.time());

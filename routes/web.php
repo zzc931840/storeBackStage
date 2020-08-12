@@ -22,6 +22,7 @@ Route::get('/test','Test\Test@index');
 //注册路由
 Route::group([],function(){
     Route::get('register','Register\register@index');
+    Route::get('testing','Register\register@testing');
     Route::get('registerCode','Register\registerCode@index');
 });
 
@@ -46,10 +47,11 @@ Route::group(['middleware'=>['ApiCret']],function (){
 
 //考试操作
 Route::group([],function (){
-    Route::get('testEx','Examination\examinationController@index');
+    Route::post('testEx','Examination\examinationController@index');
     Route::get('comparison','Examination\examinationController@comparison');
     Route::post('ExResult','Examination\examinationController@ExResult');
     Route::post('getExamination','Examination\examinationController@getExamination');
+
 });
 
 

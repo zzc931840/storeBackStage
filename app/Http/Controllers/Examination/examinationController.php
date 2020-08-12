@@ -12,8 +12,9 @@ use App\TestPaper;
 class examinationController extends Controller
 {
     //
-    public function index(){
-       $data  = Subject::where('parId',1)->with('Answer')->get();
+    public function index(Request $request){
+        $paperId = $request->input('paperId');
+       $data  = Subject::where('parId',$paperId)->with('Answer')->get();
        $arr = [];
        $arr =$this->TwoChange($data);
        return json_encode($arr) ;
