@@ -9,6 +9,8 @@ use App\Answer;
 use App\anrecord;
 use App\userRecord;
 use App\TestPaper;
+use Illuminate\Support\Facades\DB;
+
 class examinationController extends Controller
 {
     //
@@ -21,15 +23,16 @@ class examinationController extends Controller
     }
     //进行比对答案
     public  function comparison(Request $request){
+        $userId = $request->input('user_id');
         $data  = Subject::where('parId',1)->get();
          $arr =$this->TwoChange($data);
          $test = $request->input('answer');
           $test = json_decode($test,true);
-         $Set=0;
-
+          $score = 0;
           //随机生成fmark
           $mark = md5(time()).rand().'zzc';
          foreach ($test as $key => $value){
+                $Set=0;
                 $strArr = explode('-',$key);
                 if($strArr[0] == '多选题'){
                    $am = explode(',',$arr[$strArr[0]][$strArr[1]]['final']);
@@ -38,27 +41,23 @@ class examinationController extends Controller
                         foreach ($value as $str){
                              if(!in_array($str,$am)){
                                  $jude = false;
-                                 $Set = 0;
                                  break;
                              }
                         }
                         if($jude == true){
                             $Set = 1;
                         }
-                   }else{
-                       $Set = 0;
                    }
                 }else {
                     if ($arr[$strArr[0]][$strArr[1]]['final'] == $value) {
                         $Set = 1;
-                    }else{
-                        $Set = 0;
                     }
                 }
                 if($Set == 0){
                     $jude ='错误的';
                 }else{
                     $jude = '正确的';
+                   $score +=$arr[$strArr[0]][$strArr[1]]['score'];
                 }
              $anrecord =  new anrecord();
              $anrecord->fid = $arr[$strArr[0]][$strArr[1]]['id'];
@@ -79,12 +78,21 @@ class examinationController extends Controller
              }
              $anrecord->save();
          }
-         $userRecord =  new userRecord();
-         $userRecord->userId = 11;
-         $userRecord->paperId = 1;
-         $userRecord->score = 0;
-         $userRecord->mark = $mark;
-         $userRecord->save();
+         $userRecord = userRecord::where(['userId'=>8,'paperId'=>1])->get();
+         if(empty($userRecord[0])){
+             $userRecord =  new userRecord();
+             $userRecord->userId = $userId;
+             $userRecord->paperId = 1;
+             $userRecord->score = $score;
+             $userRecord->mark = $mark;
+             $userRecord->save();
+         }else{
+             $userRecord[0]->userId = $userId;
+             $userRecord[0]->paperId = 1;
+             $userRecord[0]->score = $score;
+             $userRecord[0]->mark = $mark;
+             $userRecord[0]->save();
+         }
          return json_encode($mark);
     }
 
@@ -118,8 +126,9 @@ class examinationController extends Controller
 
     //获取试卷信息
     public function getExamination(){
-         $TestPaper =  new TestPaper();
-         $TestPaper = $TestPaper->get();
+        $TestPaper =  DB::select('select (select sum(score) from subject WHERE subject.parId = test_paper.id) as score, name , id  from test_paper');
+//         $TestPaper =  new TestPaper();
+//         $TestPaper = $TestPaper->get();
          return json_encode($TestPaper);
     }
 }

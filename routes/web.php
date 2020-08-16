@@ -43,12 +43,14 @@ Route::group(['middleware'=>['ApiCret']],function (){
     Route::post('ShopTick','Booking\ShopTick@index');
     Route::post('UserSelect','Booking\booking@userSelect');
     Route::post('SnakeUpload','Snake\Snake@SnakeUpload');
+    Route::post('comparison','Examination\examinationController@comparison');
+
 });
 
 //考试操作
 Route::group([],function (){
+
     Route::post('testEx','Examination\examinationController@index');
-    Route::get('comparison','Examination\examinationController@comparison');
     Route::post('ExResult','Examination\examinationController@ExResult');
     Route::post('getExamination','Examination\examinationController@getExamination');
 
