@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Booking;
 use App\Ticks;
 use Illuminate\Http\Request;
 use App\Users;
+
 use Illuminate\Support\Facades\DB;
 class booking{
       public function index(Request $request){

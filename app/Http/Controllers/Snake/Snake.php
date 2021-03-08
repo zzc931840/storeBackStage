@@ -14,7 +14,6 @@
             $price = $request->input('price');
             $SnackName = $request->input('TradeName');
             $user = Users::find($user_id);
-
             $username = $user->name;   //获取用户名
            //将base64转为图片
            $base64_img = $request->input('imgUrl');
@@ -25,7 +24,7 @@
            $base64_img=base64_decode(str_replace($res[1],'', $base64_img));
            //获取文件后缀
            $fileName = 'data/'.$username.'/'.time().'.'.$data[0];
-           Storage::disk('upload')->put($fileName,$base64_img);
+           Storage::disk('BlogUpload')->put($fileName,$base64_img);
            $ImgSrc =  env('WEB_URL').$fileName;
            $ConJson = app()->make('ConJson');
             $Snacks = new Snacks();

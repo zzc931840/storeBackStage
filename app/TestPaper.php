@@ -8,4 +8,9 @@ class TestPaper extends Model
 {
     //
     protected $table = 'test_paper';
+    protected $fillable= ['name'];
+
+    public function SelectType(){
+        return $this->hasMany('App\PaperType','paperId','id');
+    }
 }

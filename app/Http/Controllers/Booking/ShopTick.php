@@ -12,6 +12,7 @@ class ShopTick extends Controller
         return app()->make('ConJson');
     }
     function  index(Request $request){
+
            $userId = $request->input('user_id');
            $TickId = $request->input('tick_id');
            $seat = $request->input('seat');

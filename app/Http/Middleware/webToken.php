@@ -20,7 +20,6 @@ class webToken
         if (Auth::guard('api')->guest()) {
             return response()->json(['code' => 401, 'msg' => '未设置token']);
         }
-
         return $next($request);
     }
 }

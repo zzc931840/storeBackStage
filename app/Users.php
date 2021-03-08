@@ -13,5 +13,8 @@ class Users extends Model
     public function UserTick(){
         return $this->belongsToMany('App\Ticks','App\shop_Tick','user_id','tick_id')->withPivot('seat','price')->orderBy('id','desc');
     }
+    public function UserInfo(){
+        return $this->hasMany('App\userInfo','fid','id');
+    }
 
 }
