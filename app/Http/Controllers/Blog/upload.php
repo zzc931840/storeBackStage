@@ -23,7 +23,7 @@ class upload
         //获取文件后缀
         $fileName = 'data/'.$username.'/'.time().'.'.$data[0];
         Storage::disk('blog')->put($fileName,$base64_img);
-        $blogUrl = 'http://localhost:8085/laravel/storage/BlogUpload/public/';
+        $blogUrl = 'http://www.storemain.cn/laravel/storage/BlogUpload/public/';
         $ImgSrc = $blogUrl.$fileName;
         $ConJson = app()->make('ConJson');
         $ConJson->setStatus(200);
